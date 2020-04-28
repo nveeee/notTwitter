@@ -7,7 +7,11 @@ This project is a clone of the popular social networking website Twitter. Users 
 ### TODO
 
 [ ] - Change posts database to take in user nickname so names can be displayed with posts without a second API request
+
 [ ] - Hook up Not Tweet button to API
+
 [ ] - Create basic Post/Tweet display component to render feed to the screen
+
 [ ] - Implement react-router-dom for navigation between pages
+
 [ ] - Add sidebar navigation: Profile, Settings, and Explore routes
