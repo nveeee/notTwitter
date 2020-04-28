@@ -18,11 +18,11 @@ const App: React.FC<AppProps> = () => {
 			</Grid>
 
 			<Grid item container>
-				<Grid item xs={undefined} sm={2} />
-				<Grid item xs={12} sm={8}>
-					Content
+				<Grid item xs={undefined} sm={2} md={3} />
+				<Grid item xs={12} sm={8} md={6} >
+					<Controller />
 				</Grid>
-				<Grid item xs={undefined} sm={2} />
+				<Grid item xs={undefined} sm={2} md={3} />
 			</Grid>
 
 		</Grid>

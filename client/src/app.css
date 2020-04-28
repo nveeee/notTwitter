@@ -1,0 +1,35 @@
+.d-table {
+	display:table;
+  }
+  
+  .d-table-cell {
+	display:table-cell;
+  }
+  
+  .w-100 {
+	width: 100%;
+  }
+  
+  .loader {
+	  padding: 4px 0px 4px 8px;
+  }
+
+  .twtbtn {
+	  margin-right: 0;
+	  margin-left: auto;
+	  padding-right: 12px;
+  }
+
+  .Mui-error {
+	  padding-left: 8px;
+  }
+
+  .bottom-flex {
+	display: flex;
+  }
+
+  .MuiTypography-subtitle1 {
+	display: inline;
+	padding-top: 4px;
+	padding-left: 6px
+  }

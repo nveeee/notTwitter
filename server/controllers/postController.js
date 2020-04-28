@@ -1,17 +1,16 @@
 const pool = require('../db');
 
-// GET api/v1/nottwitter/posts
+// GET api/v1/nottwitter/feed
 exports.getPosts = async (req, res, next) => {
 	try {
-		const user = await pool.query('SELECT * FROM users WHERE id = $1', [req.body.id]);
-
-		if (user.rows[0].followers) {
+		const user = await pool.query('SELECT * FROM users WHERE id = $1', [req.query.id]);
+		if (user.rows[0].followers.length !== 0) {
 			const followerIds = user.rows[0].followers.join(',');
 
 			const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${followerIds})`);
 			return res.status(200).json({
 				success: true,
-				posts: posts.rows
+				data: posts.rows
 			});
 		}
 
@@ -30,7 +29,6 @@ exports.getPosts = async (req, res, next) => {
 // GET api/v1/nottwitter/post
 exports.getPost = async (req, res, next) => {
 	try {
-		console.log(req.body.id)
 		const post = await pool.query('SELECT * FROM posts WHERE id = $1', [req.body.id]);
 
 		return res.status(200).json({

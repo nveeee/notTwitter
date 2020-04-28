@@ -4,19 +4,23 @@ const pool = require('../db');
 exports.getUser = async (req, res, next) => {
 	// Get user will be passed Google ID to check for existing user
 	try {
-		const { googleId, id } = req.body;
+		const { googleId, id, nickname } = req.query;
 		let user;
 		if (googleId) {
-			user = await pool.query('SELECT * FROM users WHERE googleid = $1 RETURNING *', [googleId]);
+			user = await pool.query('SELECT * FROM users WHERE googleid = $1', [googleId]);
+			if (Array.isArray(user.rows) && user.rows.length === 0) {
+				// If no user exists in database, create default user
+				user = await pool.query('INSERT INTO users (googleid, nickname, bio) VALUES ($1, $2, $3) RETURNING *', [googleId, nickname, '']);
+			}
 		} else {
 			user = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
 		}
-
 		return res.status(200).json({
 			success: true,
 			data: user.rows[0]
 		});
 	} catch (error) {
+		console.log(error)
 		return res.status(500).json({
 			success: false,
 			error: 'Server Error'

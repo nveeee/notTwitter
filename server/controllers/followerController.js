@@ -3,23 +3,28 @@ const pool = require('../db');
 // GET api/v1/nottwitter/followers
 exports.getFollowers = async (req, res, next) => {
 	try {
-		const { id } = req.body;
+		// const { id } = req.body;
 
-		const user = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+		// const user = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
 
-		if (user.rows[0].followers) {
-			const followerIds = user.rows[0].followers.join(',');
+		// if (user.rows[0].followers) {
+		// 	const followerIds = user.rows[0].followers.join(',');
 
-			const followers = await pool.query(`SELECT * FROM users WHERE id IN (${followerIds})`);
+		// 	const followers = await pool.query(`SELECT * FROM users WHERE id IN (${followerIds})`);
 
-			return res.status(200).json({
-				success: true,
-				data: followers.rows
-			});
-		}
+		// 	return res.status(200).json({
+		// 		success: true,
+		// 		data: followers.rows
+		// 	});
+		// }
+
+		const { followerIds } = req.query;
+
+		const followers = await pool.query(`SELECT * FROM users WHERE id IN (${followerIds.join(',')})`);
 
 		return res.status(200).json({
-			success: true
+			success: true,
+			data: followers.rows
 		});
 	} catch (error) {
 		console.log(error);

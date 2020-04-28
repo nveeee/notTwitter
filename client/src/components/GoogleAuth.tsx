@@ -1,14 +1,27 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import { GAPI_CLIENT_ID } from '../utils/config'
+import GoogleSVG from '../utils/Google__G__Logo.svg'
+import { SvgIcon, Button, CircularProgress, makeStyles, Theme, createStyles } from '@material-ui/core'
 
 interface GoogleAuthProps {
 
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		buttonStyles: {
+			float: 'right'
+		}
+	})
+);
+
+const GoogleIcon = <SvgIcon component={GoogleSVG as React.ElementType<any>} viewBox="0 0 600 476.6" />;
+
 const GoogleAuth: React.FC<GoogleAuthProps> = () => {
 	const { isSignedIn, signIn, signOut, setLoading } = useContext(GlobalContext);
 	const [auth, setAuth] = useState<gapi.auth2.GoogleAuth | undefined>();
+	const classes = useStyles();
 
 	useEffect(() => {
 		window.gapi.load('client:auth2', () => {
@@ -39,19 +52,17 @@ const GoogleAuth: React.FC<GoogleAuthProps> = () => {
 
 	if (isSignedIn === null) {
 		return (
-			<Button loading color="blue">Loading</Button>
+			<Button className={classes.buttonStyles} variant="contained" color="default" size="large" startIcon={GoogleIcon}><CircularProgress color="primary" size="1.5rem" /></Button>
 		);
 	} else if (isSignedIn) {
 		return (
-			<Button onClick={onSignOut} icon color="red">
-				<Icon name="google" />
+			<Button className={classes.buttonStyles} onClick={onSignOut} variant="contained" color="secondary" size="large" startIcon={GoogleIcon}>
 				Sign Out
 			</Button>
 		);
 	} else {
 		return (
-			<Button onClick={onSignIn} icon color="blue">
-				<Icon name="google" />
+			<Button className={classes.buttonStyles} onClick={onSignIn} variant="contained" color="default" size="large" startIcon={GoogleIcon}>
 				Sign In With Google
 			</Button>
 		);
