@@ -2,6 +2,7 @@
 
 # dependencies
 /client/node_modules
+/client/src/utils/config.ts
 /server/node_modules
 /server/config/config.env
 /server/database.sql

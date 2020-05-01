@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
-import { State, Children } from '../interfaces'
+import { State, Children, Post } from '../interfaces'
 import AppReducer from './AppReducer'
-import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR } from './actionTypes'
+import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST } from './actionTypes'
 import axios from 'axios'
 
 const initialState: State = {
@@ -51,17 +51,65 @@ export const GlobalProvider = ({ children }: Children) => {
 	};
 
 	const getFeed = async (userId: number) => {
-		const res = await axios.get('api/v1/nottwitter/feed', {
-			params: {
-				id: userId
-			}
-		});
+		try {
+			const res = await axios.get('api/v1/nottwitter/feed', {
+				params: {
+					id: userId
+				}
+			});
 
-		if (res.data.data) {
+			if (res.data.data) {
+				dispatch({
+					type: 'SET_FEED',
+					payload: res.data.data as Post[]
+				})
+			}
+		} catch (error) {
 			dispatch({
-				type: 'SET_FEED',
-				payload: res.data.data
-			})
+				type: SERVER_ERROR,
+				payload: error.response.data.error
+			});
+		}
+		
+	};
+
+	const addPost = async (text: string, userId: number, nickname: string) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}
+
+		try {
+			const res = await axios.post('api/v1/nottwitter/posts', {text, userId, nickname}, config);
+
+			if (res.data.data) {
+				dispatch({
+					type: ADD_POST,
+					payload: res.data.data as Post
+				});
+			}
+		} catch (error) {
+			dispatch({
+				type: SERVER_ERROR,
+				payload: error.response.data.error
+			});
+		}
+	};
+
+	const deletePost = async (postId: string) => {
+		try {
+			await axios.delete(`api/v1/nottwitter/posts/${postId}`);
+
+			dispatch({
+				type: DELETE_POST,
+				payload: postId
+			});
+		} catch (error) {
+			dispatch({
+				type: SERVER_ERROR,
+				payload: error.response.data.error
+			});
 		}
 	};
 
@@ -76,6 +124,8 @@ export const GlobalProvider = ({ children }: Children) => {
 				signIn: signIn,
 				signOut: signOut,
 				getFeed: getFeed,
+				addPost: addPost,
+				deletePost: deletePost,
 				setLoading: setLoading
 			}}
 		>

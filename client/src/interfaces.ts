@@ -7,10 +7,12 @@ interface UserInfo {
 	googleid: string
 };
 
-interface Post {
+export interface Post {
 	id: string,
 	text: string,
-	createdat: number
+	nickname: string,
+	createdat: number,
+	userid: number
 };
 
 export interface State {
@@ -19,9 +21,11 @@ export interface State {
 	isLoading: boolean,
 	userInfo: UserInfo | null,
 	feed: Post[] | null,
-	signIn?: (userId: string) => void,
+	signIn?: (userId: string) => Promise<void>,
 	signOut?: () => void,
-	getFeed?: (userId: number) => void,
+	getFeed?: (userId: number) => Promise<void>,
+	addPost?: (text: string, userId: number, nickname: string) => Promise<void>,
+	deletePost?: (postId: string) => Promise<void>,
 	setLoading?: (bool: boolean) => void
 };
 
@@ -35,3 +39,5 @@ export type Action =
 	| { type: 'SET_LOADING', payload: boolean }
 	| { type: 'SERVER_ERROR', payload: any }
 	| { type: 'SET_FEED', payload: Post[] }
+	| { type: 'ADD_POST', payload: Post }
+	| { type: 'DELETE_POST', payload: string }

@@ -7,7 +7,7 @@ exports.getPosts = async (req, res, next) => {
 		if (user.rows[0].followers.length !== 0) {
 			const followerIds = user.rows[0].followers.join(',');
 
-			const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${followerIds})`);
+			const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${followerIds}) ORDER BY "createdat" DESC`);
 			return res.status(200).json({
 				success: true,
 				data: posts.rows
@@ -26,7 +26,7 @@ exports.getPosts = async (req, res, next) => {
 	}
 };
 
-// GET api/v1/nottwitter/post
+// GET api/v1/nottwitter/posts
 exports.getPost = async (req, res, next) => {
 	try {
 		const post = await pool.query('SELECT * FROM posts WHERE id = $1', [req.body.id]);
@@ -43,12 +43,12 @@ exports.getPost = async (req, res, next) => {
 	}
 };
 
-// POST api/v1/nottwitter/post
+// POST api/v1/nottwitter/posts
 exports.addPost = async (req, res, next) => {
 	try {
-		const { text, userId } = req.body;
+		const { text, userId, nickname } = req.body;
 
-		const newPost = await pool.query('INSERT INTO posts (text, userid) VALUES ($1, $2) RETURNING *', [text, userId]);
+		const newPost = await pool.query('INSERT INTO posts (text, userid, nickname) VALUES ($1, $2, $3) RETURNING *', [text, userId, nickname]);
 
 		return res.status(201).json({
 			success: true,
@@ -62,7 +62,7 @@ exports.addPost = async (req, res, next) => {
 	}
 };
 
-// DELETE api/v1/nottwitter/post/:id
+// DELETE api/v1/nottwitter/posts/:id
 exports.deletePost = async (req, res, next) => {
 	try {
 		await pool.query('DELETE FROM posts WHERE id = $1', [req.params.id]);
@@ -78,7 +78,7 @@ exports.deletePost = async (req, res, next) => {
 	}
 };
 
-// PUT api/v1/nottwitter/post/:id
+// PUT api/v1/nottwitter/posts/:id
 exports.editPost = async (req, res, next) => {
 	try {
 		const { text } = req.body;

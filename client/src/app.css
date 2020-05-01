@@ -33,3 +33,8 @@
 	padding-top: 4px;
 	padding-left: 6px
   }
+
+  .MuiCardActions-root {
+    float: right;
+    padding-right: 16px;
+  }

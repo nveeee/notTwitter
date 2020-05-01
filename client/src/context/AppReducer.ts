@@ -1,5 +1,5 @@
-import { State, Action } from '../interfaces'
-import { SIGN_IN, SIGN_OUT, SET_LOADING, SET_FEED } from './actionTypes'
+import { State, Action, Post } from '../interfaces'
+import { SIGN_IN, SIGN_OUT, SET_LOADING, SET_FEED, ADD_POST, DELETE_POST } from './actionTypes'
 
 export default (state: State, action: Action) => {
 	switch (action.type) {
@@ -10,7 +10,11 @@ export default (state: State, action: Action) => {
 		case SET_LOADING:
 			return { ...state, isLoading: action.payload };
 		case SET_FEED:
-			return { ...state, feed: action.payload }
+			return { ...state, feed: action.payload };
+		case ADD_POST:
+			return { ...state, feed: [ action.payload, ...state.feed as Post[] ] };
+		case DELETE_POST:
+			return { ...state, feed: (state.feed as Post[]).filter(post => post.id !== action.payload) };
 		default:
 			return state;
 	}
