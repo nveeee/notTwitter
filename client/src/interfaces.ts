@@ -4,6 +4,7 @@ interface UserInfo {
 	bio: string,
 	createdat: string,
 	followers: number[] | null,
+	likes: number[] | null,
 	googleid: string
 };
 

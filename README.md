@@ -16,7 +16,7 @@ This project is a clone of the popular social networking website Twitter. Users 
 
 [ ] - Add sidebar navigation: Profile, Settings, and Explore routes
 
-[ ] - Add Liking posts functionality to Database
+[x] - Add Liking posts functionality to Database
 
 [ ] - Hook up liking functionality to front-end
 

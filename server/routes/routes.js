@@ -3,6 +3,7 @@ const router = express.Router();
 const { getUser, addUser, editUser, deleteUser } = require('../controllers/userController');
 const { getPosts, getPost, addPost, editPost, deletePost } = require('../controllers/postController');
 const { getFollowers, getFollower, addFollower, deleteFollower } = require('../controllers/followerController');
+const { getLikes, getLike, addLike, deleteLike } = require('../controllers/likeController');
 
 router.route('/user')
 	.get(getUser)
@@ -32,5 +33,15 @@ router.route('/follower')
 
 router.route('/follower/:id')
 	.delete(deleteFollower);
+
+router.route('/likes')
+	.get(getLikes);
+
+router.route('/like')
+	.get(getLike)
+	.post(addLike);
+
+router.route('/like/:id')
+	.delete(deleteLike);
 
 module.exports = router;
