@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 import { State, Children, Post } from '../interfaces'
 import AppReducer from './AppReducer'
-import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST } from './actionTypes'
+import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE } from './actionTypes'
 import axios from 'axios'
 
 const initialState: State = {
@@ -47,7 +47,7 @@ export const GlobalProvider = ({ children }: Children) => {
 	};
 
 	const signOut = () => {
-		dispatch({ type: SIGN_OUT })
+		dispatch({ type: SIGN_OUT });
 	};
 
 	const getFeed = async (userId: number) => {
@@ -97,7 +97,7 @@ export const GlobalProvider = ({ children }: Children) => {
 		}
 	};
 
-	const deletePost = async (postId: string) => {
+	const deletePost = async (postId: number) => {
 		try {
 			await axios.delete(`api/v1/nottwitter/posts/${postId}`);
 
@@ -109,6 +109,45 @@ export const GlobalProvider = ({ children }: Children) => {
 			dispatch({
 				type: SERVER_ERROR,
 				payload: error.response.data.error
+			});
+		}
+	};
+
+	const toggleLike = async (id: number, postId: number, isLiked: boolean | undefined) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}
+
+		try {
+			if (isLiked) {
+				// Delete Like
+				await axios.delete(`api/v1/nottwitter/like/${postId}`, {
+					data: {
+						id: id
+					}
+				});
+
+				dispatch({
+					type: DELETE_LIKE,
+					payload: postId
+				});
+			} else {
+				// Add Like
+				const res = await axios.post('api/v1/nottwitter/like', { id, postId }, config);
+
+				if (res.data.data) {
+					dispatch({
+						type: ADD_LIKE,
+						payload: postId
+					});
+				}
+			}
+		} catch (error) {
+			dispatch({
+				type: SERVER_ERROR,
+				payload: error
 			});
 		}
 	};
@@ -126,6 +165,7 @@ export const GlobalProvider = ({ children }: Children) => {
 				getFeed: getFeed,
 				addPost: addPost,
 				deletePost: deletePost,
+				toggleLike: toggleLike,
 				setLoading: setLoading
 			}}
 		>

@@ -1,4 +1,4 @@
-interface UserInfo {
+export interface UserInfo {
 	id: number,
 	nickname: string,
 	bio: string,
@@ -9,7 +9,7 @@ interface UserInfo {
 };
 
 export interface Post {
-	id: string,
+	id: number,
 	text: string,
 	nickname: string,
 	createdat: number,
@@ -26,7 +26,8 @@ export interface State {
 	signOut?: () => void,
 	getFeed?: (userId: number) => Promise<void>,
 	addPost?: (text: string, userId: number, nickname: string) => Promise<void>,
-	deletePost?: (postId: string) => Promise<void>,
+	deletePost?: (postId: number) => Promise<void>,
+	toggleLike?: (userId: number, postId: number, isLiked: boolean | undefined) => Promise<void>,
 	setLoading?: (bool: boolean) => void
 };
 
@@ -41,4 +42,6 @@ export type Action =
 	| { type: 'SERVER_ERROR', payload: any }
 	| { type: 'SET_FEED', payload: Post[] }
 	| { type: 'ADD_POST', payload: Post }
-	| { type: 'DELETE_POST', payload: string }
+	| { type: 'DELETE_POST', payload: number }
+	| { type: 'DELETE_LIKE', payload: number }
+	| { type: 'ADD_LIKE', payload: number }
