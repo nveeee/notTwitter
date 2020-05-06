@@ -1,7 +1,17 @@
-export const SIGN_IN: 'SIGN_IN' = 'SIGN_IN';
-export const SIGN_OUT: 'SIGN_OUT' = 'SIGN_OUT';
-export const SET_LOADING: 'SET_LOADING' = 'SET_LOADING';
-export const SERVER_ERROR: 'SERVER_ERROR' = 'SERVER_ERROR';
-export const SET_FEED: 'SET_FEED' = 'SET_FEED';
-export const ADD_POST: 'ADD_POST' = 'ADD_POST';
-export const DELETE_POST: 'DELETE_POST' = 'DELETE_POST';
+enum ActionTypes {
+	SIGN_IN = 'SIGN_IN',
+	SIGN_OUT = 'SIGN_OUT',
+	SET_LOADING = 'SET_LOADING',
+	SERVER_ERROR = 'SERVER_ERROR',
+	SET_FEED = 'SET_FEED',
+	ADD_POST = 'ADD_POST',
+	DELETE_POST = 'DELETE_POST'
+};
+
+export const SIGN_IN = ActionTypes.SIGN_IN;
+export const SIGN_OUT = ActionTypes.SIGN_OUT;
+export const SET_LOADING = ActionTypes.SET_LOADING;
+export const SERVER_ERROR = ActionTypes.SERVER_ERROR;
+export const SET_FEED = ActionTypes.SET_FEED;
+export const ADD_POST = ActionTypes.ADD_POST;
+export const DELETE_POST = ActionTypes.DELETE_POST;

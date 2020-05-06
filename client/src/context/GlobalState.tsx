@@ -33,7 +33,7 @@ export const GlobalProvider = ({ children }: Children) => {
 					nickname: window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName()
 				}
 			});
-	
+
 			dispatch({
 				type: SIGN_IN,
 				payload: res.data.data
