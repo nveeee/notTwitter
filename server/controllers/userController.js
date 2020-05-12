@@ -6,7 +6,7 @@ exports.getUser = async (req, res, next) => {
 	try {
 		const { googleId, id, nickname } = req.query;
 		let user;
-		if (googleId) {
+		if (googleId && nickname) {
 			user = await pool.query('SELECT * FROM users WHERE googleid = $1', [googleId]);
 			if (Array.isArray(user.rows) && user.rows.length === 0) {
 				// If no user exists in database, create default user

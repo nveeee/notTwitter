@@ -4,10 +4,20 @@ const pool = require('../db');
 exports.getPosts = async (req, res, next) => {
 	try {
 		const user = await pool.query('SELECT * FROM users WHERE id = $1', [req.query.id]);
-		if (user.rows[0].followers.length !== 0) {
-			const followerIds = user.rows[0].followers.join(',');
 
-			const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${followerIds}) ORDER BY "createdat" DESC`);
+		if (req.query.isProfilePage === 'false') {
+			if (user.rows[0].followers.length !== 0) {
+				const followerIds = user.rows[0].followers.join(',');
+	
+				const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${followerIds}) ORDER BY "createdat" DESC`);
+				return res.status(200).json({
+					success: true,
+					data: posts.rows
+				});
+			}
+		} else {
+			const posts = await pool.query('SELECT * FROM posts WHERE userid = $1 ORDER BY "createdat" DESC', [req.query.id]);
+
 			return res.status(200).json({
 				success: true,
 				data: posts.rows

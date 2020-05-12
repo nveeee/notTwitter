@@ -13,7 +13,7 @@ const Content: React.FC<ContentProps> = () => {
 
 	useEffect(() => {
 		if (userInfo) {
-			getFeed!(userInfo!.id);
+			getFeed!(userInfo!.id, false);
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

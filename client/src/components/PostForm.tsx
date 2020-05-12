@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Grid, Avatar, TextField, CircularProgress, Typography, Button, makeStyles, Theme, createStyles } from '@material-ui/core'
 import useWindowDimensions from '../hooks/useWindowDimensions'
 import { GlobalContext } from '../context/GlobalState';
+import { Link } from 'react-router-dom';
 
 interface PostFormProps {
 
@@ -51,7 +52,9 @@ const PostForm: React.FC<PostFormProps> = () => {
 	return (
 		<Grid container>
 				<Grid item xs={undefined} sm={2} hidden={width < 600 ? true : false} >
-					<Avatar className={classes.avatarStyles}>{userInfo?.nickname[0] || '?'}</Avatar>
+					<Link to={`/users/${userInfo?.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+						<Avatar className={classes.avatarStyles}>{userInfo?.nickname[0] || '?'}</Avatar>
+					</Link>
 				</Grid>
 
 				<Grid item xs={12} sm={10}>

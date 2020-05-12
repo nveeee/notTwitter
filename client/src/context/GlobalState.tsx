@@ -1,15 +1,16 @@
 import React, { createContext, useReducer } from 'react'
-import { State, Children, Post } from '../interfaces'
+import { State, Children, Post, UserInfo } from '../interfaces'
 import AppReducer from './AppReducer'
 import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE } from './actionTypes'
 import axios from 'axios'
+import { SERVER_ROOT_URI } from '../utils/config'
 
 const initialState: State = {
 	isSignedIn: null,
 	userId: null,
 	isLoading: true,
 	userInfo: null,
-	feed: null
+	feed: null,
 };
 
 export const GlobalContext = createContext(initialState);
@@ -26,7 +27,7 @@ export const GlobalProvider = ({ children }: Children) => {
 
 	const signIn = async (userId: string) => {
 		try {
-			const res = await axios.get('api/v1/nottwitter/user', {
+			const res = await axios.get(`${SERVER_ROOT_URI}/api/v1/nottwitter/user`, {
 				params: {
 					googleId: userId,
 					id: undefined,
@@ -50,11 +51,12 @@ export const GlobalProvider = ({ children }: Children) => {
 		dispatch({ type: SIGN_OUT });
 	};
 
-	const getFeed = async (userId: number) => {
+	const getFeed = async (userId: number, isProfilePage: boolean = false) => {
 		try {
-			const res = await axios.get('api/v1/nottwitter/feed', {
+			const res = await axios.get(`${SERVER_ROOT_URI}/api/v1/nottwitter/feed`, {
 				params: {
-					id: userId
+					id: userId,
+					isProfilePage: isProfilePage
 				}
 			});
 
@@ -81,7 +83,7 @@ export const GlobalProvider = ({ children }: Children) => {
 		}
 
 		try {
-			const res = await axios.post('api/v1/nottwitter/posts', {text, userId, nickname}, config);
+			const res = await axios.post(`${SERVER_ROOT_URI}/api/v1/nottwitter/posts`, {text, userId, nickname}, config);
 
 			if (res.data.data) {
 				dispatch({
@@ -99,7 +101,7 @@ export const GlobalProvider = ({ children }: Children) => {
 
 	const deletePost = async (postId: number) => {
 		try {
-			await axios.delete(`api/v1/nottwitter/posts/${postId}`);
+			await axios.delete(`${SERVER_ROOT_URI}/api/v1/nottwitter/posts/${postId}`);
 
 			dispatch({
 				type: DELETE_POST,
@@ -123,7 +125,7 @@ export const GlobalProvider = ({ children }: Children) => {
 		try {
 			if (isLiked) {
 				// Delete Like
-				await axios.delete(`api/v1/nottwitter/like/${postId}`, {
+				await axios.delete(`${SERVER_ROOT_URI}/api/v1/nottwitter/like/${postId}`, {
 					data: {
 						id: id
 					}
@@ -135,7 +137,7 @@ export const GlobalProvider = ({ children }: Children) => {
 				});
 			} else {
 				// Add Like
-				const res = await axios.post('api/v1/nottwitter/like', { id, postId }, config);
+				const res = await axios.post(`${SERVER_ROOT_URI}/api/v1/nottwitter/like`, { id, postId }, config);
 
 				if (res.data.data) {
 					dispatch({
@@ -152,6 +154,16 @@ export const GlobalProvider = ({ children }: Children) => {
 		}
 	};
 
+	const getUserProfile = async (id: number) => {
+		const res = await axios.get(`${SERVER_ROOT_URI}/api/v1/nottwitter/user`, {
+			params: {
+				id: id
+			}
+		});
+
+		return res.data.data as UserInfo;
+	};
+
 	return (
 		<GlobalContext.Provider
 			value={{
@@ -166,6 +178,7 @@ export const GlobalProvider = ({ children }: Children) => {
 				addPost: addPost,
 				deletePost: deletePost,
 				toggleLike: toggleLike,
+				getUserProfile: getUserProfile,
 				setLoading: setLoading
 			}}
 		>

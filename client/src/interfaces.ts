@@ -24,10 +24,11 @@ export interface State {
 	feed: Post[] | null,
 	signIn?: (userId: string) => Promise<void>,
 	signOut?: () => void,
-	getFeed?: (userId: number) => Promise<void>,
+	getFeed?: (userId: number, isProfilePage: boolean) => Promise<void>,
 	addPost?: (text: string, userId: number, nickname: string) => Promise<void>,
 	deletePost?: (postId: number) => Promise<void>,
 	toggleLike?: (userId: number, postId: number, isLiked: boolean | undefined) => Promise<void>,
+	getUserProfile?: (id: number) => Promise<UserInfo>,
 	setLoading?: (bool: boolean) => void
 };
 

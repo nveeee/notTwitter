@@ -18,7 +18,7 @@ export default (state: State, action: Action) => {
 		case DELETE_LIKE:
 			return { ...state, userInfo: { ...state.userInfo as UserInfo, likes: ((state.userInfo as UserInfo).likes as number[]).filter(like => like !== action.payload) }}
 		case ADD_LIKE:
-			return { ...state, userInfo: { ...state.userInfo as UserInfo, likes: [ action.payload, ...(state.userInfo as UserInfo).likes as number[] ] } }
+			return { ...state, userInfo: { ...state.userInfo as UserInfo, likes: [ action.payload, ...(state.userInfo as UserInfo).likes as number[] ] } };
 		default:
 			return state;
 	}
