@@ -7,7 +7,9 @@ enum ActionTypes {
 	ADD_POST = 'ADD_POST',
 	DELETE_POST = 'DELETE_POST',
 	DELETE_LIKE = 'DELETE_LIKE',
-	ADD_LIKE = 'ADD_LIKE'
+	ADD_LIKE = 'ADD_LIKE',
+	ADD_FOLLOWER = 'ADD_FOLLOWER',
+	DELETE_FOLLOWER = 'DELETE_FOLLOWER' 
 };
 
 export const SIGN_IN = ActionTypes.SIGN_IN;
@@ -19,3 +21,5 @@ export const ADD_POST = ActionTypes.ADD_POST;
 export const DELETE_POST = ActionTypes.DELETE_POST;
 export const DELETE_LIKE = ActionTypes.DELETE_LIKE;
 export const ADD_LIKE = ActionTypes.ADD_LIKE;
+export const ADD_FOLLOWER = ActionTypes.ADD_FOLLOWER;
+export const DELETE_FOLLOWER = ActionTypes.DELETE_FOLLOWER;

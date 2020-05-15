@@ -17,7 +17,7 @@ const Profile: React.FC<ProfileProps> = ({ match: { params: { id } } }) => {
 	
 	useEffect(() => {
 		(async () => {
-			const res = await getUserProfile!(parseInt(id))
+			const res = await getUserProfile!(parseInt(id));
 			setProfileInfo(res);
 		})();
 		getFeed!(parseInt(id), true);

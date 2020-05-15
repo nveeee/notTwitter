@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 import { State, Children, Post, UserInfo } from '../interfaces'
 import AppReducer from './AppReducer'
-import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE } from './actionTypes'
+import { SIGN_IN, SIGN_OUT, SET_LOADING, SERVER_ERROR, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE, DELETE_FOLLOWER, ADD_FOLLOWER } from './actionTypes'
 import axios from 'axios'
 import { SERVER_ROOT_URI } from '../utils/config'
 
@@ -164,6 +164,44 @@ export const GlobalProvider = ({ children }: Children) => {
 		return res.data.data as UserInfo;
 	};
 
+	const toggleFollow = async (userId: number, profileId: number, isFollowed: boolean) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}
+
+		try {
+			if (isFollowed) {
+				const res = await axios.delete(`${SERVER_ROOT_URI}/api/v1/nottwitter/follower/${profileId}`, {
+					data: {
+						id: userId
+					}
+				});
+
+				dispatch({
+					type: DELETE_FOLLOWER,
+					payload: profileId
+				});
+			} else {
+				const res = await axios.post(`${SERVER_ROOT_URI}/api/v1/nottwitter/follower`, {
+					id: userId,
+					followerId: profileId
+				}, config);
+
+				dispatch({
+					type: ADD_FOLLOWER,
+					payload: profileId
+				});
+			}
+		} catch (error) {
+			dispatch({
+				type: SERVER_ERROR,
+				payload: error
+			});
+		}
+	}
+
 	return (
 		<GlobalContext.Provider
 			value={{
@@ -179,6 +217,7 @@ export const GlobalProvider = ({ children }: Children) => {
 				deletePost: deletePost,
 				toggleLike: toggleLike,
 				getUserProfile: getUserProfile,
+				toggleFollow: toggleFollow,
 				setLoading: setLoading
 			}}
 		>

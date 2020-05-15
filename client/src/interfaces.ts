@@ -29,6 +29,7 @@ export interface State {
 	deletePost?: (postId: number) => Promise<void>,
 	toggleLike?: (userId: number, postId: number, isLiked: boolean | undefined) => Promise<void>,
 	getUserProfile?: (id: number) => Promise<UserInfo>,
+	toggleFollow?: (userId: number, profileId: number, isFollowed: boolean) => Promise<void>,
 	setLoading?: (bool: boolean) => void
 };
 
@@ -46,3 +47,5 @@ export type Action =
 	| { type: 'DELETE_POST', payload: number }
 	| { type: 'DELETE_LIKE', payload: number }
 	| { type: 'ADD_LIKE', payload: number }
+	| { type: 'ADD_FOLLOWER', payload: number }
+	| { type: 'DELETE_FOLLOWER', payload: number }

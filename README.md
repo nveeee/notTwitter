@@ -22,6 +22,6 @@ This project is a clone of the popular social networking website Twitter. Users 
 
 [-] - Create Profile Pages for users
 
-[ ] - Add following functionality
+[x] - Add following functionality
 
 [ ] - Add footer for mobile users that mimics sidebar functionality

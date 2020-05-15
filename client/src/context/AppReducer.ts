@@ -1,5 +1,5 @@
 import { State, Action, Post, UserInfo } from '../interfaces'
-import { SIGN_IN, SIGN_OUT, SET_LOADING, SET_FEED, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE } from './actionTypes'
+import { SIGN_IN, SIGN_OUT, SET_LOADING, SET_FEED, ADD_POST, DELETE_POST, DELETE_LIKE, ADD_LIKE, ADD_FOLLOWER, DELETE_FOLLOWER } from './actionTypes'
 
 export default (state: State, action: Action) => {
 	switch (action.type) {
@@ -19,6 +19,10 @@ export default (state: State, action: Action) => {
 			return { ...state, userInfo: { ...state.userInfo as UserInfo, likes: ((state.userInfo as UserInfo).likes as number[]).filter(like => like !== action.payload) }}
 		case ADD_LIKE:
 			return { ...state, userInfo: { ...state.userInfo as UserInfo, likes: [ action.payload, ...(state.userInfo as UserInfo).likes as number[] ] } };
+		case ADD_FOLLOWER:
+			return { ...state, userInfo: { ...state.userInfo as UserInfo, followers: [ action.payload, ...(state.userInfo as UserInfo).followers as number[] ] } };
+		case DELETE_FOLLOWER:
+			return { ...state, userInfo: { ...state.userInfo as UserInfo, followers: ((state.userInfo as UserInfo).likes as number[]).filter(follower => follower !== action.payload) } };
 		default:
 			return state;
 	}
