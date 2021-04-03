@@ -14,6 +14,14 @@ exports.getPosts = async (req, res, next) => {
 					success: true,
 					data: posts.rows
 				});
+			} else {
+				const newFollower = await pool.query('UPDATE users SET followers = array_append(followers, $1) WHERE id = $2 RETURNING *', [user.rows[0].id, user.rows[0].id]);
+
+				const posts = await pool.query(`SELECT * FROM posts WHERE userid IN (${user.rows[0].id}) ORDER BY "createdat" DESC`);
+				return res.status(200).json({
+					success: true,
+					data: posts.rows
+				});
 			}
 		} else {
 			const posts = await pool.query('SELECT * FROM posts WHERE userid = $1 ORDER BY "createdat" DESC', [req.query.id]);
