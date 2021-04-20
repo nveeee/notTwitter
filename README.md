@@ -20,8 +20,12 @@ This project is a clone of the popular social networking website Twitter. Users 
 
 [x] - Hook up liking functionality to front-end
 
-[-] - Create Profile Pages for users
+[x] - Create Profile Pages for users
 
 [x] - Add following functionality
 
 [ ] - Add footer for mobile users that mimics sidebar functionality
+
+[ ] - Create constant constraints for things like bio text length
+
+[ ] - Connect Profile Page edit functionality to backend
